@@ -200,8 +200,8 @@ if __name__ in '__main__':
 	# First argument is mandatory
 	parser.add_argument('input', metavar='vcf_input_file', help='Enter the name of your vcf file.')
 	# Next 3 arguments are optional
-	parser.add_argument('-N','--skiplines', help='Number of lines to skip in vcf file until header of the data table. Defalut = 10', type=int, default=10, required=False)
-	parser.add_argument('-o','--outfile', help='Output heterozygous allele counts file name. Default = 'hetAlleleDepth.txt', type=str, default='hetAlleleDepth.txt', required=False)
+	parser.add_argument('-N','--skiplines', help='Number of lines to skip in vcf file until header of the data table. Default = 10', type=int, default=10, required=False)
+	parser.add_argument('-o','--outfile', help='Output heterozygous allele counts file name. Default = hetAlleleDepth.txt', type=str, default='hetAlleleDepth.txt', required=False)
 	parser.add_argument('-id','--id_outfile', help='Output file with list of samples in your vcf file. Default = HAD_ID.csv', type=str, default='HAD_ID.csv', required=False)
 	# Array for all arguments passed to script:
 	args = parser.parse_args()
