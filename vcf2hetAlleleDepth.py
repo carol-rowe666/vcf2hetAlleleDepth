@@ -13,7 +13,12 @@ gbs2ploidy reference: Gompert Z, Mock KE (2017) Detection of individual ploidy l
 Gompert and Mock (2017) 
 gbs2ploidy aspen data/files: https://datadryad.org//resource/doi:10.5061/dryad.5vs40?show=full
 
-NOTES: The output file created here reflects that used by Gompert and Mock (2017) in their aspen example. If you sliced the first 7 rows and 10 columns (head -n 7 hetAlleleDepth.txt | cut -d" " -f1-10) of the output file, it may look like:
+NOTES: 
+The format for gbs2ploidy is: two columns for each sample and one row for each SNP.
+Homozygous sites and missing data are NA.
+Heterozygous sites have counts for each allele.
+
+For example:
 NA NA NA NA NA NA 67 1 NA NA
 8 6 11 8 NA NA 3 3 NA NA
 NA NA 11 8 NA NA NA NA NA NA
@@ -22,7 +27,12 @@ NA NA NA NA NA NA NA NA NA NA
 13 1 NA NA NA NA NA NA NA NA
 13 1 NA NA NA NA NA NA NA NA
 
-You will want to create an id file. In the script, there is an "HAD_ID.csv" file created from your vcf file which contains just your sample names (id). You can add to that file, or create your own. The file used by Gompert and Mock (2017) has the following headers for their ID file (though, most columns were not used for gbs2ploidy):
+This would represent 5 samples (two columns for each sample, for a total of 10 columns) and 7 SNPs (there are 7 rows).  
+The first sample has a heterozygous SNP at the second SNP location (row 2) where there are counts of 8 and 6 for the heterozygous alleles.
+
+gbs2ploidy requires an id file. This file is created for you in this script: "HAD_ID.csv". You have the option to rename this file when you run the script.
+The id file is just a list of your sample names (ids). 
+Note: The id file used by Gompert and Mock (2017) has the following headers (though, most columns were not used for gbs2ploidy):
 pop,id,lab_id,ploidy_updated,prD7Mar16,prT7Mar16,Comments
 
 -----------------------------------------------------------------------------------------
@@ -102,9 +112,9 @@ def vcf2hetAlleleDepth(filename, skiplines, outfile, id_outfile):
 		# retrieving just the columns with our current sample from the temp_df
 		df2 = temp_df.filter(regex=col)
 		# REF and CATG_index lists to df2
-		df2["REF"] = ref_list
+		df2 = df2.assign(CATG_index = ref_index)
+		df2 = df2.assign(REF = ref_list)
 		#print(col)
-		df2["CATG_index"] = ref_index
 		# Get the actual column names so we can reference them easily
 		GT_name = col + "_GT" 
 		CATG_name = col + "_CATG"   
